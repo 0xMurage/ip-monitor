@@ -20,7 +20,6 @@ var staticFS embed.FS
 const (
 	databaseFolder      = ".data"
 	dbFileName        = "monitor.db"
-	defaultListenPort = 8080
 	checkInterval     = 30 * time.Second // How often to run the check
 )
 
@@ -44,10 +43,10 @@ func main() {
 	}
 
 	dbFilePath := filepath.Join(databaseFolder, dbFileName)
-	
+
 	log.Printf("Database will be stored at: %s", dbFilePath)
 
-	var listenAddr = ":8080"
+	var listenAddr = ":3187" //default listening address + port
 
 	// Get listen port from environment variable or use default
 	listenPort := os.Getenv("PORT")
