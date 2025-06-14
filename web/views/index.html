@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Monitor Log</title>
+    <link rel="stylesheet" href="/static/styles/style.css">
+</head>
+<body>
+    <h1>Network Monitor Log</h1>
+
+    {{if .Error}}
+        <p class="error-message">Error: {{.Error}}</p>
+    {{end}}
+
+    {{if not .Records}}
+        <p>No records found.</p>
+    {{else}}
+        <table>
+            <thead>
+                <tr>
+                    <th>Timestamp (Local)</th>
+                    <th>IP Address</th>
+                    <th>Latency</th>
+                    <th>Download (Mbps)</th>
+                    <th>Upload (Mbps)</th>
+                    <th>Error</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{range .Records}}
+                <tr>
+                    <td>{{.Timestamp | formatTime}}</td>
+                    <td>{{.IPAddress}}</td>
+                    <td>{{if ne .Latency 0}}{{.Latency | formatDuration}}{{else}}-{{end}}</td>
+                    <td>{{if ne .DownloadMbps 0.0}}{{printf "%.2f" .DownloadMbps}}{{else}}-{{end}}</td>
+                    <td>{{if ne .UploadMbps 0.0}}{{printf "%.2f" .UploadMbps}}{{else}}-{{end}}</td>
+                    <td class="{{if .Error}}error-text{{end}}">{{if .Error}}{{.Error}}{{else}}-{{end}}</td>
+                </tr>
+                {{end}}
+            </tbody>
+        </table>
+
+        <div class="pagination">
+            {{if .HasPrevPage}}
+                <a href="/?page={{.PrevPage}}">&laquo; Previous</a>
+            {{else}}
+                <span>&laquo; Previous</span>
+            {{end}}
+
+            {{if gt (len .Pages) 0}}
+                {{if ne (index .Pages 0) 1}}
+                    <a href="/?page=1">1</a>
+                    {{if ne (index .Pages 0) 2}}
+                        <span>...</span>
+                    {{end}}
+                {{end}}
+            {{end}}
+
+            {{range .Pages}}
+                {{if eq . $.CurrentPage}}
+                    <span class="current">{{.}}</span>
+                {{else}}
+                    <a href="/?page={{.}}">{{.}}</a>
+                {{end}}
+            {{end}}
+            
+            {{if gt (len .Pages) 0}}
+                 {{if ne (index .Pages (sub (len .Pages) 1)) $.TotalPages}}
+                    {{if ne (index .Pages (sub (len .Pages) 1)) (sub $.TotalPages 1) }}
+                         <span>...</span>
+                    {{end}}
+                    <a href="/?page={{$.TotalPages}}">{{$.TotalPages}}</a>
+                {{end}}
+            {{else if eq $.TotalPages 1}}
+                 <span class="current">1</span>
+            {{end}}
+
+
+            {{if .HasNextPage}}
+                <a href="/?page={{.NextPage}}">Next &raquo;</a>
+            {{else}}
+                <span>Next &raquo;</span>
+            {{end}}
+        </div>
+        <p class="pagination-info">Page {{.CurrentPage}} of {{.TotalPages}}</p>
+    {{end}}
+</body>
+</html>
