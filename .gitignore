@@ -1,0 +1,41 @@
+# Binaries and build artifacts
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Go build outputs
+bin/
+build/
+dist/
+
+# Go module cache
+/pkg/
+/vendor/
+
+# IDE/editor configurations
+.idea/
+.vscode/
+*.swp
+*.swo
+*.bak
+*.tmp
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Devbox-specific
+.devbox/
+.envrc
+
+# Logs
+*.log
+
+# Test outputs
+coverage.out
+
+.data
