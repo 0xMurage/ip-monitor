@@ -20,7 +20,7 @@ var staticFS embed.FS
 const (
 	databaseFolder      = ".data"
 	dbFileName        = "monitor.db"
-	checkInterval     = 30 * time.Second // How often to run the check
+	checkInterval     = 30 * time.Minute // How often to run the check
 )
 
 // Record holds the data for a single network check.
